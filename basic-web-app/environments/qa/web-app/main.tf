@@ -2,10 +2,10 @@
 
 terraform {
   backend "s3" {
-    bucket         = var.backend_bucket
+    bucket         = "devops-directive-tf-state"
     key            = "basic-web-app/environments/qa/web-app/terraform.tfstate" # LOCAL PATH TO TERRAFORM STATE FILE
-    region         = var.backend_aws_region
-    dynamodb_table = var.backend_dynamodb_table
+    region         = "eu-west-1"
+    dynamodb_table = "devops-terraform-state-locking"
     encrypt        = true
   }
 }
@@ -14,6 +14,4 @@ terraform {
 
 module "web_app" {
   source = "../../../modules/web_app"
-
-
 }

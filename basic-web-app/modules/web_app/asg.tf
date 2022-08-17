@@ -52,7 +52,7 @@ module "autoscaling" {
 
 # Security
 
-module "security_group" "webAppSG" {
+module "asg_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
 
   name        = "webApp-security-group"

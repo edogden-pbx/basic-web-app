@@ -6,6 +6,11 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
+variable "environment" {
+  description = "Environment name for tagging"
+  type        = string
+}
+
 # Web Server Variables
 
 variable "ami" {

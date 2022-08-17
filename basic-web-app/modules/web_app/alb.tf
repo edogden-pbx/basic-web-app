@@ -9,7 +9,7 @@ module "alb" {
 
   vpc_id             = data.aws_vpc.default_vpc.id
   subnets            = data.aws_subnet_ids.default_subnet.ids
-  security_groups    = [module.security_group.alb_sg.security_group_id]
+  security_groups    = [module.alb_security_group.security_group_id]
 
   target_groups = [
     {
@@ -44,7 +44,7 @@ module "alb" {
   ]
 
   tags = {
-    Environment = "Test"
+    Environment = var.environment
   }
 
 }
@@ -70,7 +70,7 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-module "security_group" "alb_sg" {
+module "alb_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
 
   name        = "webApp-alb-security-group"
