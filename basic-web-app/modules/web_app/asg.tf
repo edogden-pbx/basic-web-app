@@ -3,9 +3,9 @@ module "autoscaling" {
   
   name = "webApp-asg"
   min_size = var.min_instances
-  max_size                  = var.max_instances
+  max_size = var.max_instances
   health_check_type = "EC2"
-  vpc_zone_identifier = data.aws_vpc.default_vpc.id
+  vpc_zone_identifier = module.vpc.vpc_id
 
   instance_refresh = {
     strategy = "Rolling"
@@ -19,8 +19,8 @@ module "autoscaling" {
   }
 
   # Launch template
-  launch_template_name        = "example-asg"
-  launch_template_description = "Launch template example"
+  launch_template_name        = "webApp-lt"
+  launch_template_description = "Launch template for WebApp"
   update_default_version      = true
 
   image_id          = var.ami
@@ -46,7 +46,12 @@ module "autoscaling" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 
-  target_group_arns = module.alb.lb_arn
+  target_group_arns = [module.alb.lb_arn]
+
+  tags = {
+    Terraform = "true"
+    Environment = var.environment
+  }
 
 }
 
@@ -57,7 +62,7 @@ module "asg_security_group" {
 
   name        = "webApp-security-group"
   description = "Security group for WebApp EC2"
-  vpc_id      = data.aws_vpc.default_vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["http-8080-tcp"]

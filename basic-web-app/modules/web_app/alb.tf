@@ -7,13 +7,13 @@ module "alb" {
 
   load_balancer_type = "application"
 
-  vpc_id             = data.aws_vpc.default_vpc.id
-  subnets            = data.aws_subnet_ids.default_subnet.ids
-  security_groups    = [module.alb_security_group.security_group_id]
+  vpc_id             = module.vpc.vpc_id
+  subnets            = module.vpc.public_subnets_cidr_blocks
+  security_groups    = module.alb_security_group.security_group_id
 
   target_groups = [
     {
-      name_prefix      = "webApp-"
+      name_prefix      = "wa-"
       backend_protocol = "HTTP"
       backend_port     = 8080
       target_type      = "instance"
@@ -44,6 +44,7 @@ module "alb" {
   ]
 
   tags = {
+    Terraform = "true"
     Environment = var.environment
   }
 
@@ -75,7 +76,7 @@ module "alb_security_group" {
 
   name        = "webApp-alb-security-group"
   description = "Security group for WebApp ALB"
-  vpc_id      = data.aws_vpc.default_vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["http-80-tcp", "all-icmp"]

@@ -1,3 +1,3 @@
 output "alb_dns" {
-  value = module.webAppAlb.lb_dns_name
+  value = module.alb.lb_dns_name
 }
