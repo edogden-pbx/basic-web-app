@@ -1,3 +1,7 @@
+#############################################################
+## This template will create a basic WebApp
+#############################################################
+
 terraform {
   required_providers {
     aws = {

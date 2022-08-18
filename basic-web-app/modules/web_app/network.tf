@@ -19,10 +19,3 @@ module "vpc" {
     Environment = var.environment
   }
 }
-
-# data "aws_subnets" "default_subnet" {
-#   filter {
-#     name   = "vpc-id"
-#     values = [module.vpc.vpc_id]
-#   }
-# }

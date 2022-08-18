@@ -13,6 +13,13 @@ terraform {
   #   dynamodb_table = "devops-terraform-state-locking"
   #   encrypt        = true
   # }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.14"
+    }
+  }
 }
 
 # Create backend

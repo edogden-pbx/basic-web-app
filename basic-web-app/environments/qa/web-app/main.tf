@@ -1,6 +1,6 @@
 # Provider Requirements
 
-# terraform {
+terraform {
 #   backend "s3" {
 #     bucket         = "devops-directive-tf-state"
 #     key            = "basic-web-app/environments/qa/web-app/terraform.tfstate" # LOCAL PATH TO TERRAFORM STATE FILE
@@ -8,9 +8,7 @@
 #     dynamodb_table = "devops-terraform-state-locking"
 #     encrypt        = true
 #   }
-# }
 
-terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -25,8 +23,11 @@ locals {
   environment = "qa"
 }
 
+# Declare vars for web_app
+
 variable "bucket_name" {}
 variable "domain" {}
+variable "create_dns_zone" {}
 
 # Create WebApp
 
@@ -36,4 +37,5 @@ module "web_app" {
   environment = local.environment
   bucket_name = var.bucket_name
   domain = var.domain
+  create_dns_zone = var.create_dns_zone
 }

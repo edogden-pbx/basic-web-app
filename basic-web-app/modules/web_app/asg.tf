@@ -46,6 +46,26 @@ module "autoscaling" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 
+  block_device_mappings = [
+    {
+      # Root volume
+      device_name = "/dev/xvda"
+      no_device   = 0
+      ebs = {
+        delete_on_termination = true
+        volume_size           = 20
+        volume_type           = "gp3"
+      }
+    }
+  ]
+
+  instance_market_options = {
+    market_type = "spot"
+    spot_options = {
+      block_duration_minutes = 60
+    }
+  }
+
   target_group_arns = [module.alb.lb_arn]
 
   tags = {
